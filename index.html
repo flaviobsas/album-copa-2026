@@ -9,7 +9,7 @@
     --bg: #ffffff; --bg2: #f4f4f5; --bg3: #e4e4e7;
     --text: #18181b; --text2: #71717a;
     --border: #d4d4d8; --border2: #e4e4e7;
-    --green: #1D9E75; --green-bg: #E1F5EE; --green-border: #5DCAA5; --green-text: #0F6E56;
+    --green: #0f7a52; --green-bg: #c6f0dc; --green-border: #2db37a; --green-text: #074d32;
     --red: #E24B4A; --red-bg: #FCEBEB; --red-border: #F09595; --red-text: #A32D2D;
     --amber: #BA7517; --amber-bg: #FAEEDA; --amber-border: #EF9F27; --amber-text: #854F0B;
     --radius-sm: 6px; --radius-md: 8px; --radius-lg: 12px;
@@ -18,15 +18,18 @@
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
   .container { max-width: 920px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
 
+  /* Header */
   .header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px; }
   .header-left { display: flex; flex-direction: column; gap: 4px; }
   .header-title { font-size: 20px; font-weight: 600; }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .save-indicator { font-size: 11px; color: var(--text2); display: flex; align-items: center; gap: 5px; }
   .save-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; flex-shrink: 0; }
   .save-dot.saving { background: var(--amber); animation: pulse 0.8s infinite; }
   .save-dot.error { background: var(--red); }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
+  /* Stats */
   .stats { display: flex; gap: 8px; flex-wrap: wrap; }
   .stat { background: var(--bg2); border-radius: var(--radius-md); padding: 6px 14px; text-align: center; min-width: 76px; border: 1px solid var(--border2); }
   .stat .num { font-size: 20px; font-weight: 600; }
@@ -36,28 +39,54 @@
   .num-falta { color: var(--red); }
   .num-repetida { color: var(--amber); }
 
-  .controls { display: flex; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; align-items: center; }
-  .controls input { flex: 1; min-width: 160px; padding: 7px 12px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg); color: var(--text); outline: none; }
-  .controls input:focus { border-color: #a1a1aa; }
-  .filter-btn { padding: 6px 14px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; background: var(--bg); color: var(--text2); transition: all 0.15s; }
+  /* Toolbar: edit toggle + search + filters + menu */
+  .toolbar { display: flex; gap: 8px; margin-bottom: 0.75rem; flex-wrap: wrap; align-items: center; }
+  .toolbar input { flex: 1; min-width: 160px; padding: 7px 12px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg); color: var(--text); outline: none; }
+  .toolbar input:focus { border-color: #a1a1aa; }
+
+  .edit-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 13px; font-weight: 500; border: 1.5px solid var(--border); border-radius: var(--radius-md); cursor: pointer; background: var(--bg); color: var(--text2); transition: all 0.15s; white-space: nowrap; }
+  .edit-btn.active { background: #fff3e0; border-color: var(--amber-border); color: var(--amber-text); }
+  .edit-btn svg { flex-shrink: 0; }
+
+  .filter-btn { padding: 6px 14px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; background: var(--bg); color: var(--text2); transition: all 0.15s; white-space: nowrap; }
   .filter-btn:hover { background: var(--bg2); }
   .filter-btn.active-all { background: var(--bg2); color: var(--text); font-weight: 500; border-color: #a1a1aa; }
   .filter-btn.active-tengo { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); font-weight: 500; }
   .filter-btn.active-falta { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); font-weight: 500; }
   .filter-btn.active-repetida { background: var(--amber-bg); color: var(--amber-text); border-color: var(--amber-border); font-weight: 500; }
 
-  .actions { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; }
+  /* Clear search btn */
+  .clear-btn { padding: 6px 12px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; background: var(--bg2); color: var(--text2); transition: all 0.15s; display: none; white-space: nowrap; }
+  .clear-btn:hover { background: var(--bg3); }
+  .clear-btn.visible { display: inline-block; }
+
+  /* Export row */
+  .actions { display: flex; gap: 8px; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
   .action-btn { padding: 7px 16px; font-size: 13px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; background: var(--bg); color: var(--text); transition: all 0.15s; }
   .action-btn:hover { background: var(--bg2); }
-  .action-btn.danger { color: var(--red-text); border-color: var(--red-border); }
-  .action-btn.danger:hover { background: var(--red-bg); }
 
+  /* Hamburger menu */
+  .menu-wrap { position: relative; margin-left: auto; }
+  .hamburger { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: background 0.15s; }
+  .hamburger:hover { background: var(--bg2); }
+  .hamburger span { display: block; width: 16px; height: 2px; background: var(--text2); border-radius: 2px; }
+  .menu-dropdown { display: none; position: absolute; right: 0; top: calc(100% + 6px); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: 0 4px 16px rgba(0,0,0,0.10); min-width: 180px; z-index: 50; overflow: hidden; }
+  .menu-dropdown.open { display: block; }
+  .menu-item { padding: 11px 16px; font-size: 13px; cursor: pointer; color: var(--text); transition: background 0.1s; }
+  .menu-item:hover { background: var(--bg2); }
+  .menu-item.danger { color: var(--red-text); }
+  .menu-item.danger:hover { background: var(--red-bg); }
+  .menu-divider { height: 1px; background: var(--border2); }
+
+  /* Cambios */
   .cambios-section { background: var(--bg2); border-radius: var(--radius-lg); padding: 12px 14px; margin-bottom: 1rem; border: 1px solid var(--border2); }
   .cambios-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
   .cambios-list { font-size: 12px; color: var(--text2); max-height: 80px; overflow-y: auto; line-height: 1.9; white-space: pre-line; }
 
+  /* Groups */
   .groups { display: flex; flex-direction: column; gap: 0.75rem; }
   .group-card { background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-lg); overflow: hidden; }
+  .group-card.group-hidden { display: none; }
   .group-header { padding: 9px 14px; background: var(--bg2); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
   .group-header:hover { background: var(--bg3); }
   .group-title { font-size: 13px; font-weight: 500; }
@@ -67,12 +96,23 @@
   .teams-grid { display: flex; flex-wrap: wrap; gap: 1rem; padding: 12px 14px; }
   .team-section { min-width: 100px; }
   .team-label { font-size: 10px; font-weight: 600; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.05em; text-transform: uppercase; }
-  .stickers { display: flex; flex-wrap: wrap; gap: 4px; }
-  .sticker { width: 32px; height: 32px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 500; cursor: pointer; transition: all 0.1s; background: var(--bg); color: var(--text2); position: relative; user-select: none; }
-  .sticker:hover { border-color: #a1a1aa; background: var(--bg2); }
-  .sticker.tengo { background: var(--green-bg); border-color: var(--green-border); color: var(--green-text); }
+  .stickers { display: flex; flex-wrap: wrap; gap: 5px; }
+
+  /* Sticker — más grandes, font más grande */
+  .sticker {
+    width: 38px; height: 38px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); display: flex; align-items: center;
+    justify-content: center; font-size: 11px; font-weight: 600;
+    transition: all 0.1s; background: var(--bg); color: var(--text2);
+    position: relative; user-select: none;
+    /* bloqueado por defecto */
+    cursor: default; opacity: 0.85;
+  }
+  .sticker.editable { cursor: pointer; opacity: 1; }
+  .sticker.editable:hover { border-color: #a1a1aa; background: var(--bg2); }
+  .sticker.tengo { background: var(--green-bg); border-color: var(--green-border); color: var(--green-text); font-weight: 700; }
   .sticker.repetida { background: var(--amber-bg); border-color: var(--amber-border); color: var(--amber-text); }
-  .sticker.repetida::after { content: attr(data-count); position: absolute; top: -5px; right: -5px; background: var(--amber-border); color: white; font-size: 8px; border-radius: 50%; width: 13px; height: 13px; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  .sticker.repetida::after { content: attr(data-count); position: absolute; top: -5px; right: -5px; background: var(--amber-border); color: white; font-size: 8px; border-radius: 50%; width: 13px; height: 13px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
   .sticker.hidden { display: none; }
   .group-body { display: block; }
   .group-body.collapsed { display: none; }
@@ -111,18 +151,36 @@
     </div>
   </div>
 
-  <div class="controls">
-    <input type="text" id="search" placeholder="Buscar equipo o figurita..." oninput="applyFilter()">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <!-- Botón editar -->
+    <button class="edit-btn" id="edit-btn" onclick="toggleEdit()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Editar
+    </button>
+
+    <!-- Búsqueda -->
+    <input type="text" id="search" placeholder="Ej: ARG 1, MEX, Brasil..." oninput="applyFilter()">
+    <button class="clear-btn" id="clear-btn" onclick="clearFilter()">✕ Quitar filtro</button>
+
+    <!-- Filtros estado -->
     <button class="filter-btn active-all" data-f="all" onclick="setFilter('all')">Todas</button>
     <button class="filter-btn" data-f="tengo" onclick="setFilter('tengo')">Tengo</button>
     <button class="filter-btn" data-f="falta" onclick="setFilter('falta')">Me falta</button>
     <button class="filter-btn" data-f="repetida" onclick="setFilter('repetida')">Repetidas</button>
-  </div>
 
-  <div class="actions">
-    <button class="action-btn" onclick="exportarFaltantes()">Exportar faltantes ↗</button>
-    <button class="action-btn" onclick="exportarRepetidas()">Exportar repetidas ↗</button>
-    <button class="action-btn danger" onclick="resetear()">Reiniciar álbum</button>
+    <!-- Menú hamburguesa -->
+    <div class="menu-wrap">
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="menu-item" onclick="exportarFaltantes(); closeMenu()">Exportar faltantes ↗</div>
+        <div class="menu-item" onclick="exportarRepetidas(); closeMenu()">Exportar repetidas ↗</div>
+        <div class="menu-divider"></div>
+        <div class="menu-item danger" onclick="resetear(); closeMenu()">Reiniciar álbum</div>
+      </div>
+    </div>
   </div>
 
   <div id="cambios-wrap" class="cambios-section" style="display:none">
@@ -135,7 +193,6 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Configuración ──────────────────────────────────────────
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOwLJwZgT7rXnb1vVGBWgv886VF8oBdaIZJIMlQVgvTYzYxT07nOh8HdtmAblxWKqS/exec';
 
 const GROUPS = [
@@ -170,45 +227,65 @@ const TEAM_FULL = {
 };
 
 let state = {}, cambios = [], curFilter = 'all', collapsed = {}, saveTimeout = null;
+let editMode = false;
 
-// ── Indicador ──────────────────────────────────────────────
+// ── Modo edición ───────────────────────────────────────────
+function toggleEdit() {
+  editMode = !editMode;
+  const btn = document.getElementById('edit-btn');
+  btn.classList.toggle('active', editMode);
+  btn.innerHTML = editMode
+    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Listo`
+    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar`;
+  document.querySelectorAll('.sticker').forEach(el => el.classList.toggle('editable', editMode));
+  showToast(editMode ? '✏️ Modo edición activado' : '🔒 Edición desactivada');
+}
+
+// ── Menú hamburguesa ───────────────────────────────────────
+function toggleMenu() {
+  document.getElementById('menu-dropdown').classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('menu-dropdown').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!document.getElementById('hamburger').contains(e.target) &&
+      !document.getElementById('menu-dropdown').contains(e.target)) {
+    closeMenu();
+  }
+});
+
+// ── Indicador guardado ─────────────────────────────────────
 function setSaveStatus(s) {
   const dot = document.getElementById('save-dot');
   const txt = document.getElementById('save-text');
-  if (s === 'saving')  { dot.className='save-dot saving'; txt.textContent='Guardando en Sheets...'; }
-  if (s === 'saved')   { dot.className='save-dot';        txt.textContent='Guardado en Sheets ✓'; }
-  if (s === 'error')   { dot.className='save-dot error';  txt.textContent='Error al guardar — reintentando...'; }
-  if (s === 'loading') { dot.className='save-dot saving'; txt.textContent='Cargando desde Sheets...'; }
+  if (s==='saving') { dot.className='save-dot saving'; txt.textContent='Guardando en Sheets...'; }
+  if (s==='saved')  { dot.className='save-dot';        txt.textContent='Guardado en Sheets ✓'; }
+  if (s==='error')  { dot.className='save-dot error';  txt.textContent='Error al guardar — reintentando...'; }
+  if (s==='loading'){ dot.className='save-dot saving'; txt.textContent='Cargando desde Sheets...'; }
 }
 
-// ── Google Sheets API ──────────────────────────────────────
+// ── Google Sheets ──────────────────────────────────────────
 async function loadFromSheets() {
   const res = await fetch(`${APPS_SCRIPT_URL}?action=load`);
   const json = await res.json();
   if (json.ok) return json.state;
   throw new Error('load failed');
 }
-
 async function saveToSheets(stateObj) {
-  // Apps Script no acepta POST con CORS fácilmente desde file://, usamos GET con el state en param
-  // Para estados grandes usamos un truco: codificamos en base64 y enviamos como GET
   const encoded = encodeURIComponent(JSON.stringify(stateObj));
   const res = await fetch(`${APPS_SCRIPT_URL}?action=save&data=${encoded}`);
   const json = await res.json();
   if (!json.ok) throw new Error('save failed');
 }
 
-// ── Persistencia con retry y fallback a localStorage ──────
 async function loadState() {
   setSaveStatus('loading');
   try {
-    const remote = await loadFromSheets();
-    state = remote;
-    // Sincronizar localStorage como caché
+    state = await loadFromSheets();
     localStorage.setItem('copa2026_cache', JSON.stringify(state));
     setSaveStatus('saved');
   } catch(e) {
-    console.warn('No se pudo cargar de Sheets, usando caché local', e);
     try { const c = localStorage.getItem('copa2026_cache'); if(c) state = JSON.parse(c); } catch(_) {}
     setSaveStatus('error');
     setTimeout(() => setSaveStatus('saved'), 3000);
@@ -217,22 +294,13 @@ async function loadState() {
 
 function saveState() {
   setSaveStatus('saving');
-  // Guardar en localStorage inmediatamente como caché
   localStorage.setItem('copa2026_cache', JSON.stringify(state));
-  // Debounce 600ms para Sheets
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(async () => {
     let intentos = 0;
     while (intentos < 3) {
-      try {
-        await saveToSheets(state);
-        setSaveStatus('saved');
-        return;
-      } catch(e) {
-        intentos++;
-        setSaveStatus('error');
-        await new Promise(r => setTimeout(r, 1500 * intentos));
-      }
+      try { await saveToSheets(state); setSaveStatus('saved'); return; }
+      catch(e) { intentos++; setSaveStatus('error'); await new Promise(r => setTimeout(r, 1500 * intentos)); }
     }
     setSaveStatus('error');
     showToast('⚠️ No se pudo guardar en Sheets. Datos en caché local.');
@@ -243,11 +311,12 @@ function saveState() {
 function stateKey(t, n) { return `${t}_${n}`; }
 
 function cycleSticker(team, num) {
-  const k = stateKey(team, num), cur = state[k] || 0;
-  if (cur===0) { state[k]=1; logCambio(team,num,'agregada'); }
+  if (!editMode) return;
+  const k = stateKey(team,num), cur = state[k] || 0;
+  if (cur===0)      { state[k]=1; logCambio(team,num,'agregada'); }
   else if (cur===1) { state[k]=2; logCambio(team,num,'marcada x2'); }
   else if (cur===2) { state[k]=3; logCambio(team,num,'marcada x3'); }
-  else { delete state[k]; logCambio(team,num,'quitada'); }
+  else              { delete state[k]; logCambio(team,num,'quitada'); }
   saveState(); updateSticker(team,num); updateStats(); updateGroupProgress();
 }
 
@@ -262,9 +331,11 @@ function updateSticker(team, num) {
   const k = stateKey(team,num), el = document.getElementById(`s-${k}`);
   if (!el) return;
   const v = state[k] || 0;
+  const wasEditable = el.classList.contains('editable');
   el.className = 'sticker'; el.removeAttribute('data-count');
-  if (v===1) el.className+=' tengo';
-  else if (v>=2) { el.className+=' repetida'; if(v>2) el.setAttribute('data-count', v); }
+  if (wasEditable) el.classList.add('editable');
+  if (v===1) el.classList.add('tengo');
+  else if (v>=2) { el.classList.add('repetida'); if(v>2) el.setAttribute('data-count', v); }
   applyFilterToSticker(el);
 }
 
@@ -302,13 +373,63 @@ function setFilter(f) {
   curFilter=f;
   document.querySelectorAll('.filter-btn').forEach(b=>{b.className='filter-btn';if(b.dataset.f===f)b.className+=' active-'+f;});
   document.querySelectorAll('.sticker').forEach(el=>applyFilterToSticker(el));
+  // Re-aplicar visibilidad de grupos por si hay búsqueda activa
+  applyFilter();
 }
 
 function applyFilter() {
-  const q=document.getElementById('search').value.toLowerCase();
-  document.querySelectorAll('.team-section').forEach(ts=>{
-    ts.style.display=(q&&!ts.querySelector('.team-label').textContent.toLowerCase().includes(q))?'none':'';
+  // Normalizar query: quitar espacios, uppercase. Ej: "arg 1" -> "ARG_1" o "arg1"
+  const raw = document.getElementById('search').value.trim().toUpperCase().replace(/\s+/g, '');
+  const q = raw;
+
+  const clearBtn = document.getElementById('clear-btn');
+  clearBtn.classList.toggle('visible', raw.length > 0);
+
+  GROUPS.forEach(g => {
+    const card = document.getElementById(`card-${g.name.replace(/\s/g,'')}`);
+    let anyVisible = false;
+
+    Object.entries(g.teams).forEach(([team, count]) => {
+      const sec = document.getElementById(`sec-${team}`);
+      let teamVisible = false;
+
+      for(let i=1; i<=count; i++) {
+        const el = document.getElementById(`s-${stateKey(team,i)}`);
+        if (!el) continue;
+
+        // Construir clave de búsqueda: "ARG1" o "ARG 1" ambos matchean
+        const key1 = `${team}${i}`;           // "ARG1"
+        const key2 = `${team}_${i}`;          // "ARG_1"
+        const teamName = (TEAM_FULL[team]||team).toUpperCase().replace(/\s+/g,'');
+
+        let matchSearch = true;
+        if (q.length > 0) {
+          matchSearch = key1.includes(q) || key2.includes(q) || teamName.includes(q) || team.includes(q);
+        }
+
+        // Combinado con filtro de estado
+        const iT=el.classList.contains('tengo'), iR=el.classList.contains('repetida');
+        let matchFilter = true;
+        if (curFilter==='tengo')    matchFilter = iT || iR;
+        if (curFilter==='falta')    matchFilter = !iT && !iR;
+        if (curFilter==='repetida') matchFilter = iR;
+
+        const show = matchSearch && matchFilter;
+        el.classList.toggle('hidden', !show);
+        if (show) { teamVisible = true; anyVisible = true; }
+      }
+
+      if (sec) sec.style.display = (q.length > 0 && !teamVisible) ? 'none' : '';
+    });
+
+    // Ocultar el grupo entero si no tiene nada visible
+    if (card) card.classList.toggle('group-hidden', q.length > 0 && !anyVisible);
   });
+}
+
+function clearFilter() {
+  document.getElementById('search').value = '';
+  applyFilter();
 }
 
 function showToast(msg) {
@@ -320,7 +441,11 @@ function exportarFaltantes() {
   let lines=['FIGURITAS QUE ME FALTAN - Copa 2026\n'];
   GROUPS.forEach(g=>{
     let grupo=[];
-    Object.entries(g.teams).forEach(([t,c])=>{const f=[];for(let i=1;i<=c;i++)if(!state[stateKey(t,i)])f.push(`${t} ${i}`);if(f.length)grupo.push(f.join(', '));});
+    Object.entries(g.teams).forEach(([t,c])=>{
+      const f=[];
+      for(let i=1;i<=c;i++) if(!state[stateKey(t,i)]) f.push(`${t} ${i}`);
+      if(f.length) grupo.push(f.join(', '));
+    });
     if(grupo.length) lines.push(`${g.name}:\n${grupo.join('\n')}`);
   });
   const text=lines.join('\n');
@@ -331,7 +456,12 @@ function exportarRepetidas() {
   let lines=['FIGURITAS REPETIDAS - Copa 2026\n'];
   GROUPS.forEach(g=>{
     let rep=[];
-    Object.entries(g.teams).forEach(([t,c])=>{for(let i=1;i<=c;i++){const v=state[stateKey(t,i)]||0;if(v>=2)rep.push(`${t} ${i} (x${v-1}`);}});
+    Object.entries(g.teams).forEach(([t,c])=>{
+      for(let i=1;i<=c;i++){
+        const v=state[stateKey(t,i)]||0;
+        if(v>=2) rep.push(`${t} ${i} x${v-1}`);  // sin paréntesis
+      }
+    });
     if(rep.length) lines.push(`${g.name}:\n${rep.join(', ')}`);
   });
   const text=lines.join('\n');
@@ -339,11 +469,19 @@ function exportarRepetidas() {
 }
 
 async function resetear() {
-  if(!confirm('¿Reiniciar todo el álbum? Se borrarán todos los datos del Sheet.')) return;
+  closeMenu();
+  // Doble confirmación
+  if(!confirm('¿Reiniciar el álbum?\n\nEsta acción borrará TODAS las figuritas marcadas y no se puede deshacer.')) return;
+  if(!confirm('¿Estás seguro? Se perderán todos los datos.')) return;
   state={};
   localStorage.removeItem('copa2026_cache');
   await saveToSheets({});
-  document.querySelectorAll('.sticker').forEach(el=>{el.className='sticker';el.removeAttribute('data-count');applyFilterToSticker(el);});
+  document.querySelectorAll('.sticker').forEach(el=>{
+    const wasEditable = el.classList.contains('editable');
+    el.className='sticker'; el.removeAttribute('data-count');
+    if(wasEditable) el.classList.add('editable');
+    applyFilterToSticker(el);
+  });
   updateStats(); updateGroupProgress();
   cambios=[]; document.getElementById('cambios-wrap').style.display='none';
   setSaveStatus('saved'); showToast('Álbum reiniciado');
@@ -354,7 +492,7 @@ function buildUI() {
   const container=document.getElementById('groups-container');
   GROUPS.forEach(g=>{
     const gid=g.name.replace(/\s/g,'');
-    const card=document.createElement('div'); card.className='group-card';
+    const card=document.createElement('div'); card.className='group-card'; card.id=`card-${gid}`;
     const header=document.createElement('div'); header.className='group-header';
     header.innerHTML=`<span class="group-title">${g.name}</span><span class="group-progress" id="lbl-${gid}">0/0</span>`;
     const progWrap=document.createElement('div'); progWrap.className='progress-bar-wrap';
@@ -364,7 +502,7 @@ function buildUI() {
     header.onclick=()=>{collapsed[gid]=!collapsed[gid];body.className='group-body'+(collapsed[gid]?' collapsed':'');};
     const grid=document.createElement('div'); grid.className='teams-grid';
     Object.entries(g.teams).forEach(([team,count])=>{
-      const sec=document.createElement('div'); sec.className='team-section';
+      const sec=document.createElement('div'); sec.className='team-section'; sec.id=`sec-${team}`;
       sec.innerHTML=`<div class="team-label">${team} — ${TEAM_FULL[team]||team}</div>`;
       const sd=document.createElement('div'); sd.className='stickers';
       for(let i=1;i<=count;i++){
